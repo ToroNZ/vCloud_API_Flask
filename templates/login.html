@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block body %}
+  {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+  {% endif %}
+<section class="section">
+<div class="container">
+<div class="columns is-mobile">
+  <div class="column is-half is-offset-one-quarter">
+<form action="" method="post">
+				<p class="control">
+				  <label class="radio">
+					<input type="radio" name="instance" value="https://chc.cloud.concepts.co.nz/api/sessions" checked>
+					CHC vCloud
+				  </label>
+				  <label class="radio">
+					<input type="radio" name="instance" value="https://akl.cloud.concepts.co.nz/api/sessions">
+					AKL vCloud
+				  </label>
+				</p>	
+				<p class="control has-icon">
+				  <input class="input" type="text" name="org" placeholder="Leave empty for System">
+				  <span class="icon is-small">
+					<i class="fa fa-envelope"></i>
+				  </span>
+				</p>
+				<p class="control has-icon">
+				  <input class="input" type="text" name="username" placeholder="VCAN Username">
+				  <span class="icon is-small">
+					<i class="fa fa-envelope"></i>
+				  </span>
+				</p>
+				<p class="control has-icon">
+				  <input class="input" type="password" name="password" placeholder="Password">
+				  <span class="icon is-small">
+					<i class="fa fa-lock"></i>
+				  </span>
+				</p>
+				<p class="control">
+				  <button class="button is-success">
+					Login
+				  </button>
+				</p>
+			</form>
+	  </div>
+	</div>
+ </div>
+</section>
+{% endblock %}

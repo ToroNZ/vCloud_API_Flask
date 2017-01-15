@@ -1,0 +1,65 @@
+<!doctype html>
+<!--
+    ╦ ╦┌─┐┬  ┬  ┌─┐  ┬┌┐┌┌─┐┌─┐┌─┐┌─┐┌┬┐┌─┐┬─┐
+    ╠═╣├┤ │  │  │ │  ││││└─┐├─┘├┤ │   │ │ │├┬┘
+    ╩ ╩└─┘┴─┘┴─┘└─┘  ┴┘└┘└─┘┴  └─┘└─┘ ┴ └─┘┴└─
+    By Tomas Maggio
+    MIT License
+	https://github.com/ToroNZ
+     #####    ###     #   ########
+    #     #  #   #   ##         #
+          # #     # # #        #
+     #####  #     #   #       #
+    #       #     #   #      #   
+    #        #   #    #     #   
+    #######   ###   #####  #
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>CCL vCloud Import Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.0/css/bulma.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+	<script type="text/javascript" src="static/js/main.js"></script>
+</head>
+<body {% block body_attrs %}{% endblock %}>	
+{% with messages = get_flashed_messages(with_categories=true) %}
+  <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <!-- <strong>Title</strong> --> {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+<nav class="nav has-shadow">
+  <div class="container">
+    <div class="nav-left">
+      <a class="nav-item">
+        <img src="http://concepts.co.nz/wp-content/assets/images/logo/logo.png" alt="CCL logo">
+      </a>
+      <a class="nav-item is-tab is-hidden-mobile is-active" href="{{ url_for('main') }}">Home</a>
+      <a class="nav-item is-tab is-hidden-mobile">Link1</a>
+      <a class="nav-item is-tab is-hidden-mobile">Link2</a>
+      <a class="nav-item is-tab is-hidden-mobile">Link3</a>
+    </div>
+    <span class="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+    <div class="nav-right nav-menu">
+      <a class="nav-item is-tab is-hidden-tablet is-active" href="{{ url_for('main') }}">Home</a>
+      <a class="nav-item is-tab is-hidden-tablet">Link1</a>
+      <a class="nav-item is-tab is-hidden-tablet">Link2</a>
+      <a class="nav-item is-tab is-hidden-tablet">Link3</a>
+      <a class="nav-item is-tab" href="{{ url_for('logout') }}">Log out</a>
+    </div>
+  </div>
+</nav>
+{% block body %}{% endblock %}
+</body>
+</html>

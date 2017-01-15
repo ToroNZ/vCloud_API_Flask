@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block body_attrs %}onload="my_script({{ vdc }})"{% endblock %}
+{% block body %}
+<section class="section">
+	<span class="tag">
+  Selected Organization: {{ orgname }}
+</span>
+<div class="container is-fluid">
+<div class="columns is-mobile">
+  <div class="column is-half is-offset-one-quarter">
+<form name="selvdc" action="" method="post">
+<label class="label">VDC</label>
+<p class="control">
+  <span class="select">
+    <select name="vdc" id="drop_down_1" onchange="myFunction2()">
+      <option>Select VDC</option>
+
+    </select>
+  </span>
+</p>
+			</form>
+
+	  </div>
+	</div>
+ </div>
+</section>
+{% endblock %}

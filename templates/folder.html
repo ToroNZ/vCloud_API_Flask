@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+{% block body_attrs %}onload="my_script({{ folders }})"{% endblock %}
+{% block body %}
+<section class="section">
+	<span class="tag">
+  Selected Organization: {{ orgname }}
+</span>
+		<span class="tag">
+  Selected VDC: {{ vdcname }}
+</span>
+	<span class="tag">
+  Selected vCenter: {{ vcentername }}
+</span>
+<div class="container is-fluid">
+<div class="columns is-mobile">
+  <div class="column is-half is-offset-one-quarter">
+<form name="selvc" action="" method="post">
+<label class="label">Folder</label>
+<p class="control">
+  <span class="select">
+    <select name="folder" id="drop_down_1" onchange="myFunction4()">
+      <option>Select Folder</option>
+
+    </select>
+  </span>
+</p>
+			</form>
+
+	  </div>
+	</div>
+ </div>
+</section>
+{% endblock %}
