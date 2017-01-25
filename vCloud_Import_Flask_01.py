@@ -131,8 +131,8 @@ def vc():
 def folder():
 	if request.method == 'POST':
 		global folder
-		global folderred
-		fol = request.form['vc']
+		global folderref
+		fol = request.form['folder']
 		folder = fol.split(",")[1]
 		folderref = fol.split(",")[0]
 		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
