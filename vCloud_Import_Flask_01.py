@@ -1,5 +1,5 @@
 import base64, requests, json, time
-from flask import Flask, Response, redirect, url_for, request, session, abort, flash, render_template
+from flask import Flask, Response, redirect, url_for, request, session, abort, flash, render_template, ssl
 from jinja2 import Template
 from functools import wraps
 from pyVim.connect import SmartConnect, Disconnect
