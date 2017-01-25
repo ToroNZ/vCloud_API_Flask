@@ -138,6 +138,7 @@ def folder():
 		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
 
 	else:
+		global folders
 		context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 		context.verify_mode = ssl.CERT_NONE
 		connect = SmartConnect(host=vcentername,user=username,pwd=password,port=int("443"),sslContext=context)
@@ -159,19 +160,22 @@ def folder():
 @require_api_token
 def vm():
 	if request.method == 'POST':
-		global folder
-		global folderred
-		fol = request.form['vc']
-		folder = fol.split(",")[1]
-		folderref = fol.split(",")[0]
-		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
+		#global folder
+		#global folderred
+		#fol = request.form['vc']
+		#folder = fol.split(",")[1]
+		#folderref = fol.split(",")[0]
+		#return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
 
 	else:
 		vm_array = []
-		for vm in folder.childEntity:
-			vmid = (vm)
-			vmname = (vm.name)
-			vm_array.append(([vmid, vmname]))
+		for thefolder in folders:
+			if thefolder.name == folder:
+				#print(thefolder.childEntity)
+				for vm in thefolder.childEntity:
+					vmid = (vm)
+					vmname = (vm.name)
+					vm_array.append(([vmid, vmname]))
 		return render_template('vm.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, vmlist=vm_array)
 	
 	
