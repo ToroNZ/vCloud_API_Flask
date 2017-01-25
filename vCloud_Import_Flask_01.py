@@ -130,12 +130,12 @@ def vc():
 @require_api_token
 def folder():
 	if request.method == 'POST':
-		global vcenter
-		global vcentername
-		vce = request.form['vc']
-		vcenter = vce.split(",")[1]
-		vcentername = vce.split(",")[0]
-		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername))
+		global folder
+		global folderred
+		fol = request.form['vc']
+		folder = fol.split(",")[1]
+		folderref = fol.split(",")[0]
+		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
 
 	else:
 		context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
@@ -153,6 +153,27 @@ def folder():
 			folder_id = (folder)
 			folder_array.append(([folder_name, folder_id]))
 		return render_template('folder.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folders=folder_array)
+
+# VM -> Protected url under token auth
+@app.route('/vm', methods=["GET", "POST"])
+@require_api_token
+def vm():
+	if request.method == 'POST':
+		global folder
+		global folderred
+		fol = request.form['vc']
+		folder = fol.split(",")[1]
+		folderref = fol.split(",")[0]
+		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
+
+	else:
+		vm_array = []
+		for vm in folder.childEntity:
+			vmid = (vm)
+			vmname = (vm.name)
+			vm_array.append(([vmid, vmname]))
+		return render_template('vm.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, vmlist=vm_array)
+	
 	
 # The login part
 @app.route("/login", methods=["GET", "POST"])
