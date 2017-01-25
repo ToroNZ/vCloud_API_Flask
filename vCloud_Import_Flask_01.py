@@ -160,12 +160,12 @@ def folder():
 @require_api_token
 def vm():
 	if request.method == 'POST':
-		#global folder
-		#global folderred
-		#fol = request.form['vc']
-		#folder = fol.split(",")[1]
-		#folderref = fol.split(",")[0]
-		#return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
+		global folder
+		global folderred
+		fol = request.form['vc']
+		folder = fol.split(",")[1]
+		folderref = fol.split(",")[0]
+		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
 
 	else:
 		vm_array = []
