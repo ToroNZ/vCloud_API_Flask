@@ -163,8 +163,8 @@ def vm():
 		global folder
 		global folderred
 		fol = request.form['vc']
-		folder = fol.split(",")[1]
-		folderref = fol.split(",")[0]
+		folder = fol.split(",")[0]
+		folderref = fol.split(",")[1]
 		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
 
 	else:
