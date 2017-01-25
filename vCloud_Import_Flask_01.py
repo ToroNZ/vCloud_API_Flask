@@ -140,7 +140,7 @@ def folder():
 	else:
 		context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 		context.verify_mode = ssl.CERT_NONE
-		connect = SmartConnect(host=selvc_name,user=user,pwd=passw,port=int("443"),sslContext=context)
+		connect = SmartConnect(host=vcentername,user=username,pwd=password,port=int("443"),sslContext=context)
 		content = connect.RetrieveContent()
 		datacenter = connect.content.rootFolder.childEntity[0]
 		#print (datacenter)
@@ -159,6 +159,8 @@ def folder():
 def login():
 	if request.method == 'POST':
 		global vcl_url
+		global username
+		global password
 		vcl_url = request.form['instance']
 		org = request.form['org'] or 'System'
 		username = request.form['username']
