@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% block body_attrs %}onload="my_script({{ vmlist }})"{% endblock %}
+{% block body_attrs %}onload="checkboxes({{ vmlist }})"{% endblock %}
 {% block body %}
 <section class="section">
 	<span class="tag">
@@ -21,7 +21,7 @@
 <label class="label">VMs</label>
 <p class="control">
   <span class="select">
-    <select name="vm" id="drop_down_1" onchange="myFunction5()">
+    <select name="vm" id="make_checkboxes">
       <option>Select VM</option>
 
     </select>
