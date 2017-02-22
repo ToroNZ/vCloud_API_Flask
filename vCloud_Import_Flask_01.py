@@ -199,7 +199,7 @@ def vm():
 			#print(impResponse.content)
 			tsktree = ET.fromstring(impResponse.content)
 			taskies = tsktree.getchildren()
-	return 'Return a happy thingy here'
+		return 'Return a happy thingy here'
 
 	else:
 		vm_array = []
