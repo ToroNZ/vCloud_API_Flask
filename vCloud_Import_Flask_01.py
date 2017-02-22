@@ -157,52 +157,51 @@ def folder():
 # VM -> Protected url under token auth
 @app.route('/vm', methods=["GET", "POST"])
 @require_api_token
-def vm():
-	if request.method == 'POST':
-        global vmlist
-		vmsel_array = []
-        vmregex = '''\['(.*?)]'''
-        vmlist = '''%s''' % vm_answer
-        vmmatch = re.compile(vmregex).findall(vmlist)
-        #print(vmmatch)
-        for vm in vmmatch:
-                array = vm.replace("'", "")
-                #print((array).split(',')[0]).split()
-                nameid = ((array).split(',')[0]).split()
-                refid = ((array).split(',')[1]).split()
-                vmsel_array.append(([refid, nameid]))
+	def vm():
+		if request.method == 'POST':
+			global vmlist
+			vmsel_array = []
+			vmregex = '''\['(.*?)]'''
+			vmlist = '''%s''' % vm_answer
+			vmmatch = re.compile(vmregex).findall(vmlist)
+			#print(vmmatch)
+			for vm in vmmatch:
+				array = vm.replace("'", "")
+				#print((array).split(',')[0]).split()
+				nameid = ((array).split(',')[0]).split()
+				refid = ((array).split(',')[1]).split()
+				vmsel_array.append(([refid, nameid]))
 
-        vms2move = ( ", ".join( repr(e) for e in vmsel_array )).replace("'", "").replace('[', '').replace(']', '').split(',')
-        arraygone = ( ", ".join( repr(e[0]) for e in vmsel_array )).replace("'", "").replace('[', '').replace(']', '').split(',')
-        tasks_array = []
-        impurl = ('%s/importVmAsVApp' % selvc_url)
-        impheaders = {'Accept': 'application/*+xml;version=20.0','Content-type': 'application/vnd.vmware.admin.importVmAsVAppParams+xml', 'x-vcloud-authorization': '%s' % auth_token}
+			vms2move = ( ", ".join( repr(e) for e in vmsel_array )).replace("'", "").replace('[', '').replace(']', '').split(',')
+			arraygone = ( ", ".join( repr(e[0]) for e in vmsel_array )).replace("'", "").replace('[', '').replace(']', '').split(',')
+			tasks_array = []
+			impurl = ('%s/importVmAsVApp' % selvc_url)
+			impheaders = {'Accept': 'application/*+xml;version=20.0','Content-type': 'application/vnd.vmware.admin.importVmAsVAppParams+xml', 'x-vcloud-authorization': '%s' % auth_token}
 
-        for idx, val in enumerate(vmsel_array):
-                vmname = str(val[0]).replace("'", "").replace('[', '').replace(']', '')
-                vmid = str(val[1]).replace('vim.VirtualMachine:', '').replace("'", "").replace('[', '').replace(']', '')
-                xml = ('''<?xml version="1.0" encoding="UTF-8"?>
-        <ImportVmAsVAppParams xmlns="http://www.vmware.com/vcloud/extension/v1.5" name="%s" sourceMove="true">
-        <VmMoRef>%s</VmMoRef>
-        <Vdc href="%s" />
-        </ImportVmAsVAppParams>''' % (vmname, vmid, selvdc_url))
-                impResponse = requests.post(impurl, data=xml, headers=impheaders)
-                if impResponse.status_code > 204:
-                        print(impResponse.content)
-                        errlist = '''%s''' % impResponse.content
-                        error = re.search(r'\majorErrorCode(.?)*/Error', errlist).group(0)
-                        result = "Failed"
-                        print(error)
-                else:
-                        result = "Successful"
-                print('Importing machine %s with refid %s into vCloud...' % (vmname, vmid))
-                #print(impResponse.content)
-                tsktree = ET.fromstring(impResponse.content)
-                taskies = tsktree.getchildren()
-        return 'Return a happy thingy here'
+			for idx, val in enumerate(vmsel_array):
+			vmname = str(val[0]).replace("'", "").replace('[', '').replace(']', '')
+			vmid = str(val[1]).replace('vim.VirtualMachine:', '').replace("'", "").replace('[', '').replace(']', '')
+			xml = ('''<?xml version="1.0" encoding="UTF-8"?>
+		<ImportVmAsVAppParams xmlns="http://www.vmware.com/vcloud/extension/v1.5" name="%s" sourceMove="true">
+		<VmMoRef>%s</VmMoRef>
+		<Vdc href="%s" />
+		</ImportVmAsVAppParams>''' % (vmname, vmid, selvdc_url))
+			impResponse = requests.post(impurl, data=xml, headers=impheaders)
+			if impResponse.status_code > 204:
+				print(impResponse.content)
+				errlist = '''%s''' % impResponse.content
+				error = re.search(r'\majorErrorCode(.?)*/Error', errlist).group(0)
+				result = "Failed"
+				print(error)
+			else:
+				result = "Successful"
+			print('Importing machine %s with refid %s into vCloud...' % (vmname, vmid))
+			#print(impResponse.content)
+			tsktree = ET.fromstring(impResponse.content)
+			taskies = tsktree.getchildren()
+		return 'Return a happy thingy here'
 
 	else:
-
 		vm_array = []
 		for thefolder in folders:
 			if thefolder.name == folder:
