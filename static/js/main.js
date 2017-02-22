@@ -86,7 +86,7 @@ function checkboxes(vmlist){
     };
 
     console.log("Making Drop Downs!!");
-    make_checkboxes(vdc, 'drop_down_1');
+    make_checkboxes(vdc, 'make_checkboxes1');
     console.log("Made Drop Downs!!");
 
 };
