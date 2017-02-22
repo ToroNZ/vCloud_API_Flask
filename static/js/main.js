@@ -77,10 +77,10 @@ function checkboxes(vmlist){
                 var checkBox = document.createElement('input');
                 var label = document.createElement("label");
                 checkBox.type = "checkbox";
-                option.innerHTML = list_of_vms[i];
-                option.value = list_of_vms[i];
+                checkBox.value = list_of_vms[i];
                 select_elem.appendChild(checkBox);
                 select_elem.appendChild(label);
+                label.appendChild(document.createTextNode(list_of_vms[i]));
             }
         }       
     };
