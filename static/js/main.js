@@ -71,7 +71,7 @@ function checkboxes(vmlist){
     console.log('vmlist assigned.');
 
     function make_checkboxes(list_of_vms, element_id){
-        select_elem = document.getElementById(make_checkboxes1)
+        select_elem = document.getElementById(element_id)
         if(select_elem){
             for(var i = 0; i < list_of_vms.length; i++) {
                 var checkBox = document.createElement('input');
