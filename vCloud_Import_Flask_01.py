@@ -179,26 +179,26 @@ def vm():
 		impheaders = {'Accept': 'application/*+xml;version=20.0','Content-type': 'application/vnd.vmware.admin.importVmAsVAppParams+xml', 'x-vcloud-authorization': '%s' % auth_token}
 
 		for idx, val in enumerate(vmsel_array):
-		vmname = str(val[0]).replace("'", "").replace('[', '').replace(']', '')
-		vmid = str(val[1]).replace('vim.VirtualMachine:', '').replace("'", "").replace('[', '').replace(']', '')
-		xml = ('''<?xml version="1.0" encoding="UTF-8"?>
-	<ImportVmAsVAppParams xmlns="http://www.vmware.com/vcloud/extension/v1.5" name="%s" sourceMove="true">
-	<VmMoRef>%s</VmMoRef>
-	<Vdc href="%s" />
-	</ImportVmAsVAppParams>''' % (vmname, vmid, selvdc_url))
-		impResponse = requests.post(impurl, data=xml, headers=impheaders)
-		if impResponse.status_code > 204:
-			print(impResponse.content)
-			errlist = '''%s''' % impResponse.content
-			error = re.search(r'\majorErrorCode(.?)*/Error', errlist).group(0)
-			result = "Failed"
-			print(error)
-		else:
-			result = "Successful"
-		print('Importing machine %s with refid %s into vCloud...' % (vmname, vmid))
-		#print(impResponse.content)
-		tsktree = ET.fromstring(impResponse.content)
-		taskies = tsktree.getchildren()
+			vmname = str(val[0]).replace("'", "").replace('[', '').replace(']', '')
+			vmid = str(val[1]).replace('vim.VirtualMachine:', '').replace("'", "").replace('[', '').replace(']', '')
+			xml = ('''<?xml version="1.0" encoding="UTF-8"?>
+		<ImportVmAsVAppParams xmlns="http://www.vmware.com/vcloud/extension/v1.5" name="%s" sourceMove="true">
+		<VmMoRef>%s</VmMoRef>
+		<Vdc href="%s" />
+		</ImportVmAsVAppParams>''' % (vmname, vmid, selvdc_url))
+			impResponse = requests.post(impurl, data=xml, headers=impheaders)
+			if impResponse.status_code > 204:
+				print(impResponse.content)
+				errlist = '''%s''' % impResponse.content
+				error = re.search(r'\majorErrorCode(.?)*/Error', errlist).group(0)
+				result = "Failed"
+				print(error)
+			else:
+				result = "Successful"
+			print('Importing machine %s with refid %s into vCloud...' % (vmname, vmid))
+			#print(impResponse.content)
+			tsktree = ET.fromstring(impResponse.content)
+			taskies = tsktree.getchildren()
 	return 'Return a happy thingy here'
 
 else:
