@@ -124,7 +124,7 @@ def vc():
 				vc_name = (child.attrib['name'])
 				vc_name_array.append(([vc_name, vc_url]))
 		return render_template('vc.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vc=vc_name_array)
-	
+
 # FOLDER -> Protected url under token auth
 @app.route('/folder', methods=["GET", "POST"])
 @require_api_token
@@ -160,14 +160,49 @@ def folder():
 @require_api_token
 def vm():
 	if request.method == 'POST':
-		global folder
-		global folderred
-		fol = request.form['vc']
-		folder = fol.split(",")[0]
-		folderref = fol.split(",")[1]
-		return redirect(url_for('vm', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, folderref=folderref))
+		vmsel_array = []
+        vmregex = '''\['(.*?)]'''
+        vmlist = '''%s''' % vm_answer
+        vmmatch = re.compile(vmregex).findall(vmlist)
+        #print(vmmatch)
+        for vm in vmmatch:
+                array = vm.replace("'", "")
+                #print((array).split(',')[0]).split()
+                nameid = ((array).split(',')[0]).split()
+                refid = ((array).split(',')[1]).split()
+                vmsel_array.append(([refid, nameid]))
+
+        vms2move = ( ", ".join( repr(e) for e in vmsel_array )).replace("'", "").replace('[', '').replace(']', '').split(',')
+        arraygone = ( ", ".join( repr(e[0]) for e in vmsel_array )).replace("'", "").replace('[', '').replace(']', '').split(',')
+        tasks_array = []
+        impurl = ('%s/importVmAsVApp' % selvc_url)
+        impheaders = {'Accept': 'application/*+xml;version=20.0','Content-type': 'application/vnd.vmware.admin.importVmAsVAppParams+xml', 'x-vcloud-authorization': '%s' % auth_token}
+
+        for idx, val in enumerate(vmsel_array):
+                vmname = str(val[0]).replace("'", "").replace('[', '').replace(']', '')
+                vmid = str(val[1]).replace('vim.VirtualMachine:', '').replace("'", "").replace('[', '').replace(']', '')
+                xml = ('''<?xml version="1.0" encoding="UTF-8"?>
+        <ImportVmAsVAppParams xmlns="http://www.vmware.com/vcloud/extension/v1.5" name="%s" sourceMove="true">
+        <VmMoRef>%s</VmMoRef>
+        <Vdc href="%s" />
+        </ImportVmAsVAppParams>''' % (vmname, vmid, selvdc_url))
+                impResponse = requests.post(impurl, data=xml, headers=impheaders)
+                if impResponse.status_code > 204:
+                        print(impResponse.content)
+                        errlist = '''%s''' % impResponse.content
+                        error = re.search(r'\majorErrorCode(.?)*/Error', errlist).group(0)
+                        result = "Failed"
+                        print(error)
+                else:
+                        result = "Successful"
+                print('Importing machine %s with refid %s into vCloud...' % (vmname, vmid))
+                #print(impResponse.content)
+                tsktree = ET.fromstring(impResponse.content)
+                taskies = tsktree.getchildren()
+        return 'Return a happy thingy here'
 
 	else:
+        global vmlist
 		vm_array = []
 		for thefolder in folders:
 			if thefolder.name == folder:
@@ -177,8 +212,8 @@ def vm():
 					vmname = (vm.name)
 					vm_array.append(([vmid, vmname]))
 		return render_template('vm.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, vmlist=vm_array)
-	
-	
+
+
 # The login part
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -222,6 +257,6 @@ def logout():
 	# remove the username from the session if it's there
 	session.pop('api_session_token', None)
 	return render_template('logout.html')
-	
+
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=80)
+app.run(host='0.0.0.0', port=80)
