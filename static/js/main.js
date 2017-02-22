@@ -65,6 +65,32 @@ function my_script(vc){
 
 };
 
+function checkboxes(vmlist){
+    console.log('script called.');
+    var vmlist = vmlist;
+    console.log('vmlist assigned.');
+
+    function make_checkboxes(list_of_vms, element_id){
+        select_elem = document.getElementById(element_id)
+        if(select_elem){
+            for(var i = 0; i < list_of_vms.length; i++) {
+                var checkBox = document.createElement('input');
+                var label = document.createElement("label");
+                checkBox.type = "checkbox";
+                option.innerHTML = list_of_vms[i];
+                option.value = list_of_vms[i];
+                select_elem.appendChild(checkBox);
+                select_elem.appendChild(label);
+            }
+        }       
+    };
+
+    console.log("Making Drop Downs!!");
+    make_checkboxes(vdc, 'drop_down_1');
+    console.log("Made Drop Downs!!");
+
+};
+
 function myFunction1()
 {
    document.forms[0].submit();
