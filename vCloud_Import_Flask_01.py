@@ -201,16 +201,16 @@ def vm():
 			taskies = tsktree.getchildren()
 	return 'Return a happy thingy here'
 
-else:
-	vm_array = []
-	for thefolder in folders:
-		if thefolder.name == folder:
-			#print(thefolder.childEntity)
-			for vm in thefolder.childEntity:
-				vmid = (vm)
-				vmname = (vm.name)
-				vm_array.append(([vmid, vmname]))
-	return render_template('vm.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, vmlist=vm_array)
+	else:
+		vm_array = []
+		for thefolder in folders:
+			if thefolder.name == folder:
+				#print(thefolder.childEntity)
+				for vm in thefolder.childEntity:
+					vmid = (vm)
+					vmname = (vm.name)
+					vm_array.append(([vmid, vmname]))
+		return render_template('vm.html', vdc=vdc, orgname=orgname, vdcname=vdcname, vcenter=vcenter, vcentername=vcentername, folder=folder, vmlist=vm_array)
 
 
 # The login part
